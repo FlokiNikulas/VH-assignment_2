@@ -1,22 +1,40 @@
-import moment from "moment";
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  addYears,
+  addSeconds,
+  addMinutes,
+  isBefore,
+  isSameDay as isSameDayFn,
+  isWithinInterval
+} from "date-fns";
 import { DATE_UNIT_TYPES } from "./constants";
 
-export function getCurrentYear(): number {
-  return moment().year();
-}
+export const getCurrentYear = (): number => new Date().getFullYear();
 
-export function add(date: Date | string, number: number, type: string = DATE_UNIT_TYPES.DAYS): Date {
-  return moment(date).add(number, type).toDate();
-}
+export const addToDate = (date: Date, value: number, unit: DATE_UNIT_TYPES = DATE_UNIT_TYPES.DAYS): Date => {
+  switch (unit) {
+    case DATE_UNIT_TYPES.SECONDS:
+      return addSeconds(date, value);
+    case DATE_UNIT_TYPES.MINUTES:
+      return addMinutes(date, value);
+    case DATE_UNIT_TYPES.DAYS:
+      return addDays(date, value);
+    case DATE_UNIT_TYPES.WEEKS:
+      return addWeeks(date, value);
+    case DATE_UNIT_TYPES.MONTHS:
+      return addMonths(date, value);
+    case DATE_UNIT_TYPES.YEARS:
+      return addYears(date, value);
+    default:
+      throw new Error("Unsupported date unit type");
+  }
+};
 
-export function isWithinRange(date: Date | string, from: Date | string, to: Date | string): boolean {
-  return moment(date).isBetween(from, to);
-}
+export const isWithinRange = (date: Date, startDate: Date, endDate: Date): boolean => 
+  isWithinInterval(date, { start: startDate, end: endDate });
 
-export function isDateBefore(date: Date | string, compareDate: Date | string): boolean {
-  return moment(date).isBefore(compareDate);
-}
+export const isDateBefore = (date: Date, compareDate: Date): boolean => isBefore(date, compareDate);
 
-export function isSameDay(date: Date | string, compareDate: Date | string): boolean {
-  return moment(date).isSame(compareDate);
-}
+export const isSameDay = (date: Date, compareDate: Date): boolean => isSameDayFn(date, compareDate);
