@@ -64,10 +64,29 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install ESLint Dependencies
+      - name: Install ESLint and Prettier
         run: |
-          npm install --save-dev eslint
+          npm install --save-dev eslint prettier eslint-plugin-prettier eslint-config-prettier
           npm install --save-dev eslint-plugin-import eslint-plugin-node eslint-plugin-promise
 
       - name: Run ESLint
         run: npx eslint .
+
+  format:
+    name: Check Formatting with Prettier
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Prettier
+        run: npm install --save-dev prettier
+
+      - name: Run Prettier Check
+        run: npx prettier --check .
