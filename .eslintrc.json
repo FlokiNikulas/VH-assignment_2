@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "camelcase": ["error", { "properties": "always" }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": ["moment"],
+        "message": "Do not use moment. Consider using date-fns or native Date instead."
+      }
+    ],
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  }
+}
